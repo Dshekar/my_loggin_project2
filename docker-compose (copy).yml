@@ -9,8 +9,6 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
-    networks:
-      - my_loggin_project2_elk_network  # Custom network for Elasticsearch and Logstash
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.15.0
@@ -19,8 +17,6 @@ services:
       - "5601:5601"
     depends_on:
       - elasticsearch
-    networks:
-      - my_loggin_project2_elk_network  # Connect to the same network as Elasticsearch and Logstash
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.15.0
@@ -32,8 +28,6 @@ services:
       - "5044:5044"
     depends_on:
       - elasticsearch
-    networks:
-      - my_loggin_project2_elk_network  # Connect to the same network as Elasticsearch and Kibana
 
   filebeat:
     image: docker.elastic.co/beats/filebeat:7.15.0
@@ -41,14 +35,7 @@ services:
     user: root
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /var/lib/docker/:/host-logs
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
     depends_on:
       - logstash
-    networks:
-      - my_loggin_project2_elk_network  # Connect to the same network as Elasticsearch and Logstash
-
-networks:
-  my_loggin_project2_elk_network:  # Define the custom network for Elasticsearch, Kibana, Logstash, and Filebeat
-    driver: bridge
 

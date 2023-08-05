@@ -1,9 +1,9 @@
 filebeat.inputs:
-  - type: container
+  - type: log
+    enabled: true
     paths:
-      - "/var/lib/docker/containers/*/*-json.log"   
-    
+      - /host-logs/containers/*/*-json.log
 
 output.logstash:
-  hosts: ["localhost:5044"]
+  hosts: ["logstash:5044"]
 
